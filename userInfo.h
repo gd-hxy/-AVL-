@@ -20,6 +20,11 @@ class userInfo
 			return myId;
 		}
 		
+		void output(ostream & out)
+		{
+			out << myId <<" " << myPassword << endl;
+		}
+		
 		void writeMessage()            //将用户信息记录 
 		{
 			ofstream out;
