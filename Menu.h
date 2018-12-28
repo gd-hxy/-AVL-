@@ -12,7 +12,21 @@ class Menu
 	private:
 		userTree usertree;
 	public:
-		Menu();             //初始化
+		Menu(){
+			ifstream inStream;
+			inStream.open("userData.dat" ,ios::binary);
+			inStream.seekg(0, ios::beg);
+			string userFile;
+			userInfo user;
+			while(true)
+			{
+				if(inStream.eof())
+					break;
+				inStream >> user;                 //提取文件中的用户信息写入user变量中 
+				usertree.insert(user);           //插入用户树
+				getline(inStream, userFile);
+			}
+		};            //初始化
 		void select();         //用户交互界面   
 		void menuInput();      //用户登录验证函数 
 		void menuInsert();
@@ -20,22 +34,6 @@ class Menu
 		void menuDelete(Node *m);
 		
 };
-
-
-Menu::Menu()
-{
-	ifstream inStream("userData.dat" ,ios::in|ios::binary);
-	string userFile;
-	userInfo user;
-	getline(inStream, userFile);
-	while(true)
-	{
-		if(inStream.eof())
-			break;
-		inStream >> user;                 //提取文件中的用户信息写入user变量中 
-		usertree.insert(user);           //插入用户树 
-	}
-}
 
 void Menu::select()
 {
@@ -108,10 +106,11 @@ void Menu::menuInput()
 		for(int i = 0; i < 80; i++)
 			cout << "*";
 		cout << endl;
-		cout << "\t\t\t 请选择你要进行的操作： \n\n\n\n\n\n";
+		cout << "\t 请选择你要进行的操作： \n\n\n\n\n\n";
 		cout << "\t\t\t 1.更改密码" << endl << endl;
-		cout << "\t\t\t 2.注销用户" << endl << endl;
-		cout << "\t\t\t 3.退出" << endl << endl;
+		cout << "\t\t\t 2.切换账号" << endl << endl;
+		cout << "\t\t\t 3.注销用户" << endl << endl;
+		cout << "\t\t\t 4.退出" << endl << endl;
 		for(int i = 0; i < 80; i++)
 			cout << "*";
 		cout << endl;
@@ -127,10 +126,15 @@ void Menu::menuInput()
 				}
 			case 2:
 				{
-					menuDelete(ptr);                          //注销用户函数 
+					menuInput();
 					break;
 				}
 			case 3:
+				{
+					menuDelete(ptr);                          //注销用户函数 
+					break;
+				}
+			case 4:
 				{
 					cout << "系统将于3秒后退出"; 
 					Sleep(3000);
@@ -217,7 +221,7 @@ void Menu::menuInsert()
 			cout << "*";
 		}
 		cout << endl;
-		cout << "\t\t\t 请选择你要进行的操作： \n\n\n\n\n\n";
+		cout << "\t 请选择你要进行的操作： \n\n\n\n\n\n";
 		cout << "\t\t\t 1.返回登录菜单" << endl << endl;
 		cout << "\t\t\t 2.重新注册" << endl << endl;
 		for(int i = 0; i < 80; i++)
@@ -251,7 +255,6 @@ void Menu::menuInsert()
 	{
 		user.writeMessage();
 		usertree.insert(user);
-		Sleep(3000);
 		system("cls");
 		cout << "\t\t\t  注册成功！" << endl;
 		for(int i = 0; i < 80; i++)
@@ -259,7 +262,7 @@ void Menu::menuInsert()
 			cout << "*";
 		}
 		cout << endl;
-		cout << "\t\t\t 请选择你要进行的操作： \n\n\n\n\n\n";
+		cout << "\t 请选择你要进行的操作： \n\n\n\n\n\n";
 		cout << "\t\t\t 1.返回登录菜单" << endl << endl;
 		cout << "\t\t\t 2.退出" << endl << endl;
 		for(int i = 0; i < 80; i++)
@@ -301,7 +304,7 @@ void Menu::menuDelete(Node *ptr)
 		cout << "*";
 	}
 	cout << endl;
-	cout << "\t\t\t 请选择你要进行的操作： \n\n\n\n\n\n";
+	cout << "\t 请选择你要进行的操作： \n\n\n\n\n\n";
 	cout << "\t\t\t 1.注销当前用户" << endl << endl;
 	cout << "\t\t\t 2.返回登录系统" << endl << endl;
 	cout << "\t\t\t 3.退出" << endl << endl;
@@ -345,7 +348,7 @@ void Menu::menuDelete(Node *ptr)
 		cout << "*";
 	}
 	cout << endl;
-	cout << "\t\t\t 请选择你要进行的操作： \n\n\n\n\n\n";
+	cout << "\t 请选择你要进行的操作： \n\n\n\n\n\n";
 	cout << "\t\t\t 1.返回主菜单" << endl << endl;
 	cout << "\t\t\t 2.退出" << endl << endl;
 	for(int i = 0; i < 80; i++)
@@ -411,7 +414,7 @@ void Menu::menuChange(Node *ptr)
 			cout << "*";
 		}
 	cout << endl;
-	cout << "\t\t\t 请选择你要进行的操作： \n\n\n\n\n\n";
+	cout << "\t 请选择你要进行的操作： \n\n\n\n\n\n";
 	cout << "\t\t\t 1.返回主菜单" << endl << endl;
 	cout << "\t\t\t 2.退出" << endl << endl;
 	for(int i = 0; i < 80; i++)
